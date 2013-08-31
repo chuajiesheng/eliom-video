@@ -12,12 +12,13 @@ include Makefile.options
 ##			      Internals
 
 ## Required binaries
-ELIOMC            := eliomc
+ELIOMC            := eliomc -annot
 ELIOMOPT          := eliomopt
 JS_OF_ELIOM       := js_of_eliom
 ELIOMDEP          := eliomdep
 OCSIGENSERVER     := ocsigenserver
 OCSIGENSERVER.OPT := ocsigenserver.opt
+CP		  := cp
 
 ## Where to put intermediate object files.
 ## - ELIOM_{SERVER,CLIENT}_DIR must be distinct
@@ -160,6 +161,7 @@ ${ELIOM_TYPE_DIR}/%.type_mli: %.eliom
 $(TEST_PREFIX)$(LIBDIR)/$(PROJECT_NAME).cma: $(call objs,$(ELIOM_SERVER_DIR),cmo,$(SERVER_FILES)) | $(TEST_PREFIX)$(LIBDIR)
 	${ELIOMC} -a -o $@ $(GENERATE_DEBUG) \
           $(call depsort,$(ELIOM_SERVER_DIR),cmo,-server,$(SERVER_INC),$(SERVER_FILES))
+	${CP} $(ELIOM_SERVER_DIR)/*.annot .
 
 $(TEST_PREFIX)$(LIBDIR)/$(PROJECT_NAME).cmxa: $(call objs,$(ELIOM_SERVER_DIR),cmx,$(SERVER_FILES)) | $(TEST_PREFIX)$(LIBDIR)
 	${ELIOMOPT} -a -o $@ $(GENERATE_DEBUG) \
